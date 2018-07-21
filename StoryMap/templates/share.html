@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Socialike</title>
+    <link rel="shortcut icon" type="image/x-icon" href="style/images/favicon.png" />
+    <link rel="stylesheet" type="text/css" href="style.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="style/css/prettyPhoto.css"  />
+    <link rel="stylesheet" type="text/css" href="style/type/classic.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="style/type/goudy.css" media="all" />
+    <script type="text/javascript" src="style/js/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="style/js/superfish.js"></script>
+    <script type="text/javascript" src="style/js/jquery.prettyPhoto.js"></script>
+</head>
+<body>
+<div id="body-wrapper">
+    <!-- Begin Header -->
+    <div id="header">
+        <div class="logo">
+            <a href="index.html"><img src="style/images/logo.png" alt="" /></a>
+        </div>
+
+
+        <!-- Begin Menu -->
+        <div class="menu">
+            <ul class="sf-menu">
+                <li><a href="index.html">地图</a></li>
+                <li><a href="story_list.html">故事</a></li>
+                <li><a href="gallery.html">展示</a></li>
+                <li><a href="share.html">分享</a></li>
+                <li><a href="#">登录/注销</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+        <!-- End Menu -->
+
+    </div>
+    <!-- End Header -->
+
+
+
+    <!-- Begin Wrapper -->
+    <div id="wrapper">
+        <div class="intro">Phasellus vitae lectus sit amet ipsum fringilla viverra at et leo. Cras iaculis, sem vel venenatis sodales, elit dui elementum lorem, ut semper ligula ipsum at sapien.</div>
+
+        <!-- 标题--->
+        <form class="forms" method="post">
+            <fieldset>
+            <div class="form-row text-input-row">
+                <label>标题</label>
+                <input class="text-input required" id="story_titte" type="text">
+            </div>
+            </fieldset>
+        </form>
+        <!-- 标题 --->
+        <br><br>
+
+        <!--文章内容 --->
+        <div class="content" id="story_holder">
+        </div> <!-- End Container -->
+        <script type="text/javascript" src="style/js/wangEditor.min.js"></script>
+        <script type="text/javascript">
+            var qh = $("#story_holder");
+            qh.prepend('<div class="fly-panel detail-box ques-adding-box">' +
+                '<div class="questitle-line ques-category-adding"></div>     ' +
+                '<div style="margin-top: 10px">              ' +
+                '<form id="story_adding_form">' +
+                '<div class="text-area"><div id="rich-text-menu1"></div>' +
+                '<div class="rich-text" style="margin-bottom: 10px;min-height: 50px;">' +
+                '<div id="rich-text-box1"></div>' +
+                '</div>' +
+                '<input name="contents" type="hidden" id="contents">' +
+                '<a id="save-adding-story" type="button" class="button blue">保存</a>' +
+                '</form>' +
+                '</div></div></div> ');
+            var E = window.wangEditor;
+            var editor = new E('#rich-text-menu1','#rich-text-box1');
+            editor.customConfig.uploadImgServer = '/upload';
+            editor.customConfig.uploadFileName = 'images';
+            editor.customConfig.showLinkImg = false;
+            editor.customConfig.debug = true;
+            editor.customConfig.zIndex = 40;
+            editor.create();
+        </script>
+        <!--文章内容 --->
+
+        <div class="clear"></div>
+    </div>
+    <!-- End Wrapper -->
+
+    <div class="push"></div>
+</div>
+<!-- End Body Wrapper -->
+<div id="footer">
+    <div class="footer">
+        <p>Copyright &copy;xxxx</p>
+    </div>
+</div>
+<script type="text/javascript" src="style/js/scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Piecemaker>
+  <Contents>
+    <Image Source="style/images/art/s1-big.jpg" Title="Risus Porta Vehicula"></Image>
+    <Image Source="style/images/art/s2-big.jpg" Title="Ornare Vestibulum Elit">
+      <Text>&lt;h1&gt;Adipiscing Ridiculus Elit Venenatis&lt;/h1&gt;&lt;p&gt;Donec ullamcorper nulla non metus auctor fringilla.&lt;/p&gt;&lt;p&gt;Curabitur blandit tempus porttitor. Maecenas faucibus mollis interdum.&lt;/p&gt;&lt;p&gt;Nullam id dolor id nibh ultricies vehicula ut id elit.&lt;/p&gt;</Text>
+      <Hyperlink URL="#" Target="_blank" />
+    </Image>
+    <Image Source="style/images/art/s3-big.jpg" Title="Justo Ipsum Cras"></Image>
+    <Image Source="style/images/art/s4-big.jpg" Title="Ridiculus Egestas Risus"></Image>
+  </Contents>
+  <Settings 
+  ImageWidth="960" 
+  ImageHeight="450" 
+  LoaderColor="0x333333" 
+  InnerSideColor="0x222222" 
+  SideShadowAlpha="0.8" 
+  DropShadowAlpha="0.7" 
+  DropShadowDistance="15" 
+  DropShadowScale="0.92" 
+  DropShadowBlurX="45" 
+  DropShadowBlurY="4" 
+  MenuDistanceX="20" 
+  MenuDistanceY="40" 
+  MenuColor1="0x999999" 
+  MenuColor2="0x333333" 
+  MenuColor3="0xFFFFFF" 
+  ControlSize="75" 
+  ControlDistance="20" 
+  ControlColor1="0x222222" 
+  ControlColor2="0xFFFFFF" 
+  ControlAlpha="0.8" 
+  ControlAlphaOver="0.95" 
+  ControlsX="480" 
+  ControlsY="360" 
+  ControlsAlign="center" 
+  TooltipHeight="30" 
+  TooltipColor="0x222222" 
+  TooltipTextY="5" 
+  TooltipTextStyle="P-Italic"
+   TooltipTextColor="0xFFFFFF" 
+   TooltipMarginLeft="5" 
+   TooltipMarginRight="7" 
+   TooltipTextSharpness="50" 
+   TooltipTextThickness="-100" 
+   InfoWidth="400" 
+   InfoBackground="0xFFFFFF" 
+   InfoBackgroundAlpha="0.95" 
+   InfoMargin="15" 
+   InfoSharpness="0" 
+   InfoThickness="0" 
+   Autoplay="10" 
+   FieldOfView="45">
+   </Settings>
+  <Transitions>
+    <Transition Pieces="10" Time="1.2" Transition="easeInOutBack" Delay="0.1" DepthOffset="300" CubeDistance="10"></Transition>
+    <Transition Pieces="15" Time="1.3" Transition="easeInOutBack" Delay="0.1" DepthOffset="300" CubeDistance="10"></Transition>
+    <Transition Pieces="12" Time="1.3" Transition="easeInOutBack" Delay="0.1" DepthOffset="500" CubeDistance="10"></Transition>
+    <Transition Pieces="9" Time="1.25" Transition="easeInOutBack" Delay="0.1" DepthOffset="900" CubeDistance="10"></Transition>
+  </Transitions>
+</Piecemaker>

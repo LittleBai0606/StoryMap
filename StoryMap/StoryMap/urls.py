@@ -15,7 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from django.conf.urls import url, include
+import main_platform.views as mp_view
+import users.views as u_view
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
+    url(r'^captcha/', include('captcha.urls')),
+    url(r'^login/$', u_view.UserLoginView.as_view(), name='login'),
+    url(r'^logout/$', u_view.UserLogoutView.as_view(), name='logout'),
+    url(r'^register/$', u_view.RegisterView.as_view(), name='register'),
+    url(r'^active/(?P<active_code>.*)/$', u_view.ActiveUserView.as_view(), name="user_active"),
+    url(r'^$', mp_view.IndexView.as_view(), name='index'),
 ]

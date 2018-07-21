@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main_platform',
+    'users',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'StoryMap.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,6 +132,8 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+AUTH_USER_MODEL = "users.UserProfile"
 
 
 EMAIL_HOST = "smtp.163.com"
