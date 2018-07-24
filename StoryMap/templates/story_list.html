@@ -65,26 +65,26 @@
 			var date = 0;
 			var author = "作者";
 			var content = "内容";
-			for (var i=1; i<20; i++) {
+            {% for story in story_list %}
 			    var data = '<div class="post text"><div class="icon-text"></div>' +
 					'<div class="content"><div class="top"></div>' +
 					'<div class="middle">' +
 					'<div class="post-text">' +
-					'<h2 class="title"><a href="story.html">'+title+'</a></h2>' +
-					'<p>'+content+'</p>' +
+					'<h2 class="title"><a href="{% url 'story_detail' story.id %}">'+"{{ story.title }}"+'</a></h2>' +
+					'{{ story.content | safe }}' +
 					'</div>' +
 					'<div class="meta-wrapper">' +
 					'<div class="meta">' +
 					'<ul class="post-info>">' +
-					'<li style="float:right"><span class="post-link"></span>'+(date+i)+'</li>' +
-					'<li style="float:left"><span class="post-tag"></span>'+author+'</li>' +
+					'<li style="float:right"><span class="post-link"></span>'+"{{ story.modified_time }}"+'</li>' +
+					'<li style="float:left"><span class="post-tag"></span>'+"{{ story.user_belong.username }}"+'</li>' +
 					'</ul>' +
 					'</div></div>' +
 					'</div>' +
 					'<div class="bottom"></div>' +
 					'</div></div>';
 			    page_data.push(data);
-			};
+            {% endfor %}
 			$(function () {
 			    var count = page_data.length; //文章总数
 			    var page_size = 5;  //每页显示文章数
