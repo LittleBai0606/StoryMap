@@ -1,0 +1,208 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Socialike</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'style/images/favicon.png' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static 'style/css/prettyPhoto.css' %}"  />
+    <link rel="stylesheet" type="text/css" href="{% static 'style/type/classic.css' %}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static 'style/type/goudy.css' %}" media="all" />
+    <script type="text/javascript" src="{% static 'style/js/jquery-1.6.2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'style/js/superfish.js' %}"></script>
+    <script type="text/javascript" src="{% static 'style/js/jquery.prettyPhoto.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/sweetalert.js' %}"></script>
+
+</head>
+<body>
+<div id="body-wrapper">
+    <!-- Begin Header -->
+    <div id="header">
+        <div class="logo">
+            <a href="{% url 'index' %}"><img src="{% static 'style/images/logo.png' %}" alt="" /></a>
+        </div>
+
+
+        <!-- Begin Menu -->
+        <div class="menu">
+            <ul class="sf-menu">
+                <li><a href="{% url 'index' %}">地图</a></li>
+                <li><a href="{% url 'story_list' %}">故事</a></li>
+                <li><a href="{% url 'gallery' %}">展示</a></li>
+                <li><a href="{% url 'share' %}">分享</a></li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">注销</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">登录</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="clear"></div>
+        <!-- End Menu -->
+
+    </div>
+    <!-- End Header -->
+
+
+
+    <!-- Begin Wrapper -->
+    <div id="wrapper">
+        <div class="intro">Phasellus vitae lectus sit amet ipsum fringilla viverra at et leo. Cras iaculis, sem vel venenatis sodales, elit dui elementum lorem, ut semper ligula ipsum at sapien.</div>
+        <!-- Begin Container -->
+        <div class="container">
+
+            <div class="post text">
+                <div class="content">
+                    <div class="top"></div>
+                    <div class="middle">
+                        <div class="post-text">
+                            <h2 class="title">{{ story.title }}</h2>
+                            <p>{{ story.content | safe }}</p>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="bottom"></div>
+                </div>
+            </div>
+
+            <h3 class="line">评论</h3>
+
+            <!-- Begin Comments -->
+            <div id="comments">
+                <ol id="singlecomments" class="commentlist">
+                    <li class= "clearfix">
+                        <div class="user">reply</div>
+                        {% for comment in comment_list %}
+                        <div class="message">
+                            <div class="info">
+                                <h4>{{ comment.user_belong.username }}</h4>
+                                <span class="date">{{ comment.created_time }}</span>
+                            </div>
+                            <p>{{ comment.content | safe }}</p>
+                        </div>
+                        <div class="clear"><br></div>
+                        {% endfor %}
+                    </li>
+                </ol>
+            </div>
+            <!-- End Comments -->
+
+            <!-- Begin Form -->
+            <div class="comment-form">
+                <h3 class="line">发表评论</h3>
+                <div class="form-container">
+                    <form class="forms" action="#" method="post">
+                        <fieldset>
+                            <ol>
+                                <li class="form-row text-area-row">
+                                    <label>Message</label>
+                                    <textarea id="post_message" class="text-area required"></textarea>
+                                </li>
+                                <li class="button-row">
+                                    <a type="button" id="submit_comment" class="button blue">提交</a>
+                                </li>
+                            </ol>
+                        </fieldset>
+                    </form>
+                    <div class="response"></div>
+                </div>
+            </div>
+            <script>
+                $("#submit_comment").click(function () {
+                    if(confirm("是否提交评论?")) {
+                        var post_obj = new Object();
+                        post_obj.date = new Date().toLocaleDateString();
+                        post_obj.message = $("#post_message").val();
+                        $.ajax({
+                            cache: false,
+                            type:"POST",
+                            url:"/story/{{ story.id }}",
+                            data:post_obj,
+                            dateType:"json",
+                            async:true,
+                            success:function (data) {
+
+                                if(data.status == 'success') {
+                                    swal({
+                                        icon: "success",
+                                        text: data.msg,
+                                        confirmButtonText: '查看分享'
+                                    }).then(function (isConfirm) {
+                                        if(isConfirm === true){
+                                            window.location.reload()
+                                        }
+                                    });
+                                }else if (data.status == 'fail') {
+                                    swal(data.msg, "", "error");
+                                }
+                            },
+                        });
+                    }
+                });
+            </script>
+            <!-- End Form -->
+        </div> <!-- End Container -->
+
+        <div class="sidebar">
+
+            <div class="sidebox">
+                <h3 class="line">Popular Posts</h3>
+                <ul class="popular-posts">
+                    {% for hot in hot_list %}
+                    <li>
+                        <a href="#"><img src="{% static 'style/images/art/1.jpg' %}" alt="" /></a>
+                        <h5><a href="{% url 'story_detail' hot.id %}">{{ hot.title }}</a></h5>
+                        <span>{{ hot.modified_time }}</span>
+                    </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+
+            <div class="sidebox">
+                <h3 class="line">Search</h3>
+                <form class="searchform" method="get">
+                    <input type="text" id="s" name="s" value="type and hit enter" onfocus="this.value=''" onblur="this.value='type and hit enter'"/>
+                </form>
+            </div>
+
+        </div>
+        <div class="clear"></div>
+
+    </div>
+    <!-- End Wrapper -->
+
+    <div class="push"></div>
+</div>
+<!-- End Body Wrapper -->
+<div id="footer">
+    <div class="footer">
+        <p>Copyright &copy;xxxx</p>
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'style/js/scripts.js' %}"></script>
+<script type="text/javascript">
+    var maxWidth = 450, maxHeight = 300;
+    var images = document.getElementsByClassName("article_img");
+    for (var i=0; i<images.length; i++) {
+       var image = new Image();
+       image.src = images[i].src;
+       if (image.width < maxWidth && image.height < maxHeight) {
+           images[i].width = image.width;
+           images[i].height = image.height;
+       }
+       else {
+           if (maxWidth / maxHeight <= image.width / image.height) {
+               images[i].width = maxWidth;
+               images[i].height = maxHeight;
+           }
+           else {
+               images[i].width = maxHeight * (image.width / image.height)
+               images[i].height = maxHeight;
+           }
+       }
+    }
+</script>
+</body>
+</html>

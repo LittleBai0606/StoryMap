@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
@@ -124,11 +125,15 @@ $.fn.imagesLoaded = function(a) {
     <!-- Begin Menu -->
     <div class="menu">
       <ul class="sf-menu">
-        <li><a href="index.html">地图</a></li>
-        <li><a href="story_list.html">故事</a></li>
-        <li><a href="gallery.html">展示</a></li>
-        <li><a href="share.html">分享</a></li>
-        <li><a href="#">登录/注销</a></li>
+        <li><a href="{% url 'index' %}">地图</a></li>
+        <li><a href="{% url 'story_list' %}">故事</a></li>
+        <li><a href="{% url 'gallery' %}">展示</a></li>
+        <li><a href="{% url 'share' %}">分享</a></li>
+        {% if request.user.is_authenticated %}
+          <li><a href="{% url 'logout' %}">注销</a></li>
+        {% else %}
+          <li><a href="{% url 'login' %}">登录</a></li>
+        {% endif %}
       </ul>
     </div>
     <div class="clear"></div>
@@ -149,21 +154,9 @@ $.fn.imagesLoaded = function(a) {
         
         <div class="clear"></div>
         <div class="items">
-          <div class="box col5"><a href="style/images/art/1.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/1.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/2.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/2.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/3.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/3.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/4.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/4.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/5.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/5.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/1.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/1.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/1.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/1.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/2.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/2.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/3.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/3.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/4.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/4.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/5.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/5.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/2.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/2.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/3.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/3.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/4.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/4.jpg" alt="" /></a></div>
-          <div class="box col5"><a href="style/images/art/5.jpg" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="style/images/art/5.jpg" alt="" /></a></div>
+          {% for gallery in gallery_list %}
+          <div class="box col5"><a href="{% static gallery.photo_url %}" rel="prettyPhoto[gallery]" title="Caption of the image"><span class="overlay zoom"></span><img src="{% static gallery.photo_url %}" alt="" /></a></div>
+          {% endfor %}
         </div>
         <!-- .wrap --> 
     </div>

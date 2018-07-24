@@ -1,0 +1,165 @@
+{% load staticfiles  %}
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Socialike</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'style/images/favicon.png' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static 'style/css/prettyPhoto.css' %}"  />
+    <link rel="stylesheet" type="text/css" href="{% static 'style/type/classic.css' %}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{% static 'style/type/goudy.css' %}" media="all" />
+    <script type="text/javascript" src="{% static 'style/js/jquery-1.6.2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'style/js/superfish.js' %}"></script>
+    <script type="text/javascript" src="{% static 'style/js/jquery.prettyPhoto.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/sweetalert.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
+</head>
+<body>
+<div id="body-wrapper">
+    <!-- Begin Header -->
+    <div id="header">
+        <div class="logo">
+            <a href="{% url 'index' %}"><img src="{% static 'style/images/logo.png' %}" alt="" /></a>
+        </div>
+
+
+        <!-- Begin Menu -->
+        <div class="menu">
+            <ul class="sf-menu">
+                <li><a href="{% url 'index' %}">地图</a></li>
+                <li><a href="{% url 'story_list' %}">故事</a></li>
+                <li><a href="{% url 'gallery' %}">展示</a></li>
+                <li><a href="{% url 'share' %}">分享</a></li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">注销</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">登录</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="clear"></div>
+        <!-- End Menu -->
+
+    </div>
+    <!-- End Header -->
+
+
+
+    <!-- Begin Wrapper -->
+    <!-- Begin Wrapper -->
+    <div id="wrapper">
+        <div class="intro">Phasellus vitae lectus sit amet ipsum fringilla viverra at et leo. Cras iaculis, sem vel venenatis sodales, elit dui elementum lorem, ut semper ligula ipsum at sapien.</div>
+
+        <!-- 标题--->
+        <form class="forms" method="post">
+            <fieldset>
+            <div class="form-row text-input-row">
+                <label>标题</label>
+                <input class="text-input required" id="story_titte" type="text">
+            </div>
+            </fieldset>
+        </form>
+        <!-- 标题 --->
+        <br><br>
+
+        <!--文章内容 --->
+        <div class="content" id="story_holder">
+        </div> <!-- End Container -->
+        <script type="text/javascript" src="{% static 'style/js/wangEditor.min.js' %}"></script>
+        <script type="text/javascript">
+            var qh = $("#story_holder");
+            qh.prepend('<div class="fly-panel detail-box ques-adding-box">' +
+                '<div class="questitle-line ques-category-adding"></div>     ' +
+                '<div style="margin-top: 10px">              ' +
+                '<form id="story_adding_form">' +
+                "{% csrf_token %}" +
+                '<div class="text-area"><div id="rich-text-menu1"></div>' +
+                '<div class="rich-text" style="margin-bottom: 10px;min-height: 50px;">' +
+                '<div id="rich-text-box1"></div>' +
+                '</div>' +
+                '<input name="contents" type="hidden" id="contents">' +
+                '<a id="save-adding-story" type="button" class="button blue">保存</a>' +
+                '</form>' +
+                '</div></div></div> ');
+            var E = window.wangEditor;
+            var editor = new E('#rich-text-menu1','#rich-text-box1');
+            editor.customConfig.uploadImgServer = '/story/upload/';
+            editor.customConfig.uploadFileName = 'images';
+            editor.customConfig.uploadImgShowBase64 = true;
+            editor.customConfig.showLinkImg = false;
+            editor.customConfig.debug = true;
+            editor.customConfig.zIndex = 40;
+            editor.create();
+
+            var post_obj = new Object();
+
+            navigator.geolocation.getCurrentPosition(function (position) {
+                post_obj.x = position.coords.latitude;
+                post_obj.y = position.coords.longitude;
+            }, function (msg) {
+                console.log(msg.code, msg.message);
+            });
+
+
+            $("#save-adding-story").click(function () {
+
+                post_obj.title = document.getElementById('story_titte').value
+                post_obj.content = editor.txt.html();
+                var flag = 0;
+                        if (!post_obj.title) {
+                            swal("标题不能为空", "", "error");
+                            flag = 1;
+                        }
+                        if (!post_obj.content){
+                            swal("内容不能为空", "", "error");
+                            flag = 1;
+                        }
+                        if(flag == 1){
+                            return false;
+                        }
+                $.ajax({
+                    cache:false,
+                    type:"POST",
+                    url:"/add_story/",
+                    headers:{ "X-CSRFtoken":$.cookie("csrftoken")},
+                    data: post_obj,
+                    dateType:"json",
+                    async:true,
+                    success:function (data) {
+
+                        if(data.status == 'success') {
+                          swal({
+                                icon: "success",
+                                text: data.msg,
+                                confirmButtonText: '查看分享'
+                          }).then(function (isConfirm) {
+                              if(isConfirm === true){
+                                    window.location.href = "{% url 'index' %}";
+
+                                }
+                            });
+                        }else if (data.status == 'fail') {
+                            swal(data.msg, "", "error");
+                        }
+                    },
+                });
+            });
+        </script>
+        <!--文章内容 --->
+
+        <div class="clear"></div>
+    </div>
+    <!-- End Wrapper -->
+
+    <div class="push"></div>
+</div>
+<!-- End Body Wrapper -->
+<div id="footer">
+    <div class="footer">
+        <p>Copyright &copy;xxxx</p>
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'style/js/scripts.js' %}"></script>
+</body>
+</html>

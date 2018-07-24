@@ -1,87 +1,129 @@
+{% load staticfiles %}
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
 <meta charset="UTF-8">
 <title>Socialike</title>
-<link rel="shortcut icon" type="image/x-icon" href="style/images/favicon.png" />
-<link rel="stylesheet" type="text/css" href="style.css" media="all" />
-<link rel="stylesheet" type="text/css" href="style/css/prettyPhoto.css"  />
-<link rel="stylesheet" type="text/css" href="style/type/classic.css" media="all" />
-<link rel="stylesheet" type="text/css" href="style/type/goudy.css" media="all" />
-<script type="text/javascript" src="style/js/jquery-1.6.2.min.js"></script>
-<script type="text/javascript" src="style/js/superfish.js"></script>
-<script type="text/javascript" src="style/js/jquery.prettyPhoto.js"></script>
+<link rel="shortcut icon" type="image/x-icon" href="{% static 'style/images/favicon.png' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" media="all" />
+<link rel="stylesheet" type="text/css" href="{% static 'style/css/prettyPhoto.css' %}"  />
+<link rel="stylesheet" type="text/css" href="{% static 'style/type/classic.css' %}" media="all" />
+<link rel="stylesheet" type="text/css" href="{% static 'style/type/goudy.css' %}" media="all" />
+<script type="text/javascript" src="{% static 'style/js/jquery-1.6.2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'style/js/superfish.js' %}"></script>
+<script type="text/javascript" src="{% static 'style/js/jquery.prettyPhoto.js' %}"></script>
+<script type="text/javascript" src="{% static 'style/js/scripts.js' %}"></script>
+
 </head>
 <body>
-<div id="body-wrapper"> 
+<div id="body-wrapper">
   <!-- Begin Header -->
   <div id="header">
-    <div class="logo">
-      <a href="index.html"><img src="style/images/logo.png" alt="" /></a>
-    </div>
+        <div class="logo">
+            <a href="{% url 'index' %}"><img src="{% static 'style/images/logo.png' %}" alt="" /></a>
+        </div>
 
-    
-    <!-- Begin Menu -->
-      <div class="menu">
-          <ul class="sf-menu">
-              <li><a href="index.html">地图</a></li>
-              <li><a href="story_list.html">故事</a></li>
-              <li><a href="gallery.html">展示</a></li>
-              <li><a href="share.html">分享</a></li>
-			  <li><a href="#">登录/注销</a></li>
-          </ul>
-      </div>
-    <div class="clear"></div>
-    <!-- End Menu --> 
-    
-  </div>
-  <!-- End Header --> 
-  
-  
-  
+
+        <!-- Begin Menu -->
+        <div class="menu">
+            <ul class="sf-menu">
+                <li><a href="{% url 'index' %}">地图</a></li>
+                <li><a href="{% url 'story_list' %}">故事</a></li>
+                <li><a href="{% url 'gallery' %}">展示</a></li>
+                <li><a href="{% url 'share' %}">分享</a></li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">注销</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">登录</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="clear"></div>
+        <!-- End Menu -->
+
+    </div>
+  <!-- End Header -->
+
+
+
   <!-- Begin Wrapper -->
  <div id="wrapper">
     <div class="intro">Phasellus vitae lectus sit amet ipsum fringilla viverra at et leo. Cras iaculis, sem vel venenatis sodales, elit dui elementum lorem, ut semper ligula ipsum at sapien.</div>
   	<!-- Begin Container -->
   	<div class="container">
+        <div id="article_list">
 
-        <div class="post text">
-        <div class="icon-text"></div>
-        <div class="content">
-        	<div class="top"></div>
-        	<div class="middle">
-        		<div class="post-text">
-        			<h2 class="title"><a href="story.html">标题</a></h2>
-        			<p>Cras adipiscing fringilla gravida. Quisque lectus nisl, blandit dictum aliquam vel, porttitor sit amet quam. Donec sed mauris ante, commodo purus. Nunc condimentum, sapien a aliquet elementum, dui neque facilisis arcu, 				eu cursus nunc velit at orci. Nunc congue, nisi sed elementum aliquam,
-	    			<br /><br />
-	    			Etiam condimentum lacinia bibendum. Sed tempor feugiat purus, idetsen dapibus eros sagittis sed nulla lacina. Pellentesque habitant morbi laciros.
-	    			</p>
-        		</div>
-        		<div class="meta-wrapper">
-	    		<div class="meta">
-        			<ul class="post-info">
-        				<li><span class="post-link"></span><a href="#">时间</a></li>
-        				<li><span class="post-tag"></span><a href="#">作者</a></li>
-        			</ul>
-        			<div class="share"><span class="post-share"></span><a href="#">Share</a></div>
-        			<div class="clear"></div>
-        		</div>
-        		</div>
-        	</div>
-        	<div class="bottom"></div>
-        </div>
         </div>
         <!-- Begin Page Navi -->
         <div class="page-navi">
-        		<ul>
-        			<li><a href="#" class="current">1</a></li>
-        			<li><a href="#">2</a></li>
-        			<li><a href="#">3</a></li>
+        		<ul id="page">
         		</ul>
         </div>
+		<script>
+			var page_data = [];
+			var title = "标题";
+			var date = 0;
+			var author = "作者";
+			var content = "内容";
+			for (var i=1; i<20; i++) {
+			    var data = '<div class="post text"><div class="icon-text"></div>' +
+					'<div class="content"><div class="top"></div>' +
+					'<div class="middle">' +
+					'<div class="post-text">' +
+					'<h2 class="title"><a href="story.html">'+title+'</a></h2>' +
+					'<p>'+content+'</p>' +
+					'</div>' +
+					'<div class="meta-wrapper">' +
+					'<div class="meta">' +
+					'<ul class="post-info>">' +
+					'<li style="float:right"><span class="post-link"></span>'+(date+i)+'</li>' +
+					'<li style="float:left"><span class="post-tag"></span>'+author+'</li>' +
+					'</ul>' +
+					'</div></div>' +
+					'</div>' +
+					'<div class="bottom"></div>' +
+					'</div></div>';
+			    page_data.push(data);
+			};
+			$(function () {
+			    var count = page_data.length; //文章总数
+			    var page_size = 5;  //每页显示文章数
+			    var page_count = Math.ceil(count / page_size); //总页数
+                var current_page = 1; //当前页
+                var id_name = "";
+				//加按钮
+				for (var i=1; i<=page_count; i++) {
+				    id_name = 'page_btn'+i;
+				    var page_btn = '<li><a href="#" id='+id_name+' class="page_btn" select_page="'+i+'">'+i+'</a></li>';
+				    $('#page').append(page_btn);
+				};
+                id_name = 'page_btn' + current_page;
+				var li = document.getElementById(id_name);
+				li.className = 'page_btn current';
+
+
+				//显示第一页
+				for(var i=(current_page-1)*page_size; i<page_size*current_page; i++) {
+				  $('#article_list').append(page_data[i]);
+                };
+
+                //显示选择页
+                $('a').click(function () {
+                    li.className = 'page_btn';
+                    current_page = $(this).attr('select_page');
+                    $('#article_list').html('');
+                    for (var i=(current_page-1)*page_size; i<page_size*current_page; i++) {
+                        $('#article_list').append(page_data[i]);
+					};
+                    id_name = 'page_btn' + current_page;
+                    li = document.getElementById(id_name);
+                    li.className = 'page_btn current';
+                });
+            });
+		</script>
         <!-- End Page Navi -->
 	</div> <!-- End Container -->
-	
+
 	<div class="sidebar">
 
 		<div class="sidebox">
@@ -92,37 +134,21 @@
 					<h5><a href="#">Dolor Commodo Consectetur</a></h5>
                     <span>时间</span>
 				</li>
-
-				<li>
-					<a href="#"><img src="style/images/art/ad2.jpg" alt="" /></a>
-					<h5><a href="#">Dolor Commodo Consectetur</a></h5>
-                    <span>时间</span>
-				</li>
-
-				<li>
-					<a href="#"><img src="style/images/art/ad3.jpg" alt="" /></a>
-					<h5><a href="#">Dolor Commodo Consectetur</a></h5>
-                    <span>时间</span>
-				</li>
 			</ul>
 		</div>
-
-
-
-
 		<div class="sidebox">
 			<h3 class="line">Search</h3>
 			<form class="searchform" method="get">
           		<input type="text" id="s" name="s" value="type and hit enter" onfocus="this.value=''" onblur="this.value='type and hit enter'"/>
         	</form>
 		</div>
-		
+
 	</div>
     <div class="clear"></div>
-    
+
   </div>
   <!-- End Wrapper -->
-  
+
   <div class="push"></div>
 </div>
 <!-- End Body Wrapper -->
@@ -131,6 +157,5 @@
         <p>Copyright &copy;xxxx</p>
     </div>
 </div>
-<script type="text/javascript" src="style/js/scripts.js"></script>
 </body>
 </html>
